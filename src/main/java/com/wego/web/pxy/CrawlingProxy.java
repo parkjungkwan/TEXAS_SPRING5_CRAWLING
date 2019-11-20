@@ -89,6 +89,7 @@ public class CrawlingProxy extends Proxy{
 		
 			for (int i=0;i<tempforTitle.size();i++) {
 				map = new HashMap<>();
+				map.put("seq", string(i+1));
 				map.put("title", tempforTitle.get(i).text());
 				map.put("artist", tempforContent.get(i).text());
 				map.put("thumbnail", tempforphoto.get(i).select("img").attr("src"));

@@ -87,7 +87,7 @@ app =(()=>{
 						// No. ,title, artist, thumbnail
 						
 						$('#right').empty()
-						$('<table><tr id="head"></tr></table>')
+						$('<table id="content"><tr id="head"></tr></table>')
 						.css({width: '99%',
 								height: '50px',
 				              border: '1px solid black'})
@@ -99,8 +99,16 @@ app =(()=>{
 					              border: '1px solid black'})
 							.appendTo('#head')
 						})
+						$.each(list, (i, j)=>{
+							$('<tr><td>'+j.seq+'</td><td><img src="'+j.thumbnail+'"/></td><td>'+j.title+'</td><td>'+j.artist+'</td></tr>')
+							.css({width: '25%',height: '100%',
+					              border: '1px solid black'})
+							.appendTo('#content tbody')
+						})
+						$('#content tr td').css({border: '1px solid black'})
 						
-						alert('벅스 사이즈 '+d)
+						
+						
 					})
 					break
 					
