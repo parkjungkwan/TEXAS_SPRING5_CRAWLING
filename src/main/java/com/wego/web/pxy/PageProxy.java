@@ -1,12 +1,9 @@
 package com.wego.web.pxy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-
 import lombok.Data;
 
 @Data @Lazy

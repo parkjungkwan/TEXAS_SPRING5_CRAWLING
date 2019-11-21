@@ -7,12 +7,22 @@ app =(()=>{
 		
 	}
 	let run = x =>{
-		$.getScript(x+'/resources/js/router.js',()=>{
-			$.extend(new Session(x))
+		$.when(
+				$.getScript(x+'/resources/js/router.js',()=>{
+					$.extend(new Session(x))
+				}),
+				$.getScript(x+'/resources/js/pop.js')		
+		)
+		.done(()=>{
+			onCreate()
 		})
-		onCreate()
+		.fail(()=>{
+			alert('fail')
+		})
 	}
 	let onCreate=()=>{
+		$(pop.view()).appendTo('#wrapper')
+		pop.open()
 		setContentView()
 	}
 	let setContentView =()=>{

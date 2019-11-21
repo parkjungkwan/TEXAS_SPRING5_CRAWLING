@@ -33,7 +33,7 @@ public class CrawlController {
 		System.out.println("bugs");
 		ArrayList<HashMap<String, String>> list = crawler.bugsCrawling();
 		pager.setRowCount(list.size());
-		pager.setPageSize(5);
+		pager.setPageSize(10);
 		pager.setBlockSize(5);
 		pager.setNowPage(0);
 		pager.paging();
@@ -46,7 +46,7 @@ public class CrawlController {
 		}
 		box.put("pager", pager);
 		box.put("list", temp);
-		
+		System.out.println("페이저 : "+box.get("pager").toString());
 		return box.get();
 	}
 }
