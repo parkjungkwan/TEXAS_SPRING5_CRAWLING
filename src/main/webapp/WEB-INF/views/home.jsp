@@ -11,12 +11,12 @@
 	<script src= "https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/jquery.magnific-popup.min.js" ></script >
 	<script src="<%=application.getContextPath()%>/resources/js/app.js"></script>
 	<script src="<%=application.getContextPath()%>/resources/js/router.js"></script>
+	<script src="<%=application.getContextPath()%>/resources/js/pop.js"></script>
 </head>
 <body>
 <div id='wrapper'></div>
 <script>
 app.run('<%=application.getContextPath()%>')
-	
-	</script>
+</script>
 </body>
 </html>

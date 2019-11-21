@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,7 @@ import com.wego.web.pxy.Box;
 import com.wego.web.pxy.CrawlingProxy;
 import com.wego.web.pxy.Inventory;
 import com.wego.web.pxy.PageProxy;
+import com.wego.web.pxy.Proxy;
 @RestController
 @RequestMapping("/crawls")
 public class CrawlController {
@@ -28,14 +30,14 @@ public class CrawlController {
 		System.out.println("cgv");
 		return crawler.cgvCrawl();
 	}
-	@GetMapping("/bugs")
-	public Map<?,?> bugs() {
-		System.out.println("bugs");
+	@GetMapping("/bugs/page/{page}")
+	public Map<?,?> bugs(@PathVariable String page) {
+		System.out.println("넘어온 페이지 : "+page);
 		ArrayList<HashMap<String, String>> list = crawler.bugsCrawling();
 		pager.setRowCount(list.size());
 		pager.setPageSize(10);
 		pager.setBlockSize(5);
-		pager.setNowPage(0);
+		pager.setNowPage(pager.integer(page));
 		pager.paging();
 		ArrayList<HashMap<String, String>> temp = new ArrayList<>();
 		for(int i=0;i< list.size(); i++) {

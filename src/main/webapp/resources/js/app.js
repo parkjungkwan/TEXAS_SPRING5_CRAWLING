@@ -1,19 +1,20 @@
 var app = app ||{}
 app =(()=>{
 	let _,js
-	let init=x=>{
-		_ = $.ctx
-		js = $.js
+	let init=()=>{
+		_ = $.ctx()
+		js = $.js()
 		
 	}
 	let run = x =>{
 		$.when(
-				$.getScript(x+'/resources/js/router.js',()=>{
-					$.extend(new Session(x))
-				}),
-				$.getScript(x+'/resources/js/pop.js')		
+			$.getScript(x+'/resources/js/router.js',()=>{
+				$.extend(new Session(x))
+			}),
+			$.getScript(x+'/resources/js/pop.js')		
 		)
 		.done(()=>{
+			init()
 			onCreate()
 		})
 		.fail(()=>{
@@ -91,35 +92,7 @@ app =(()=>{
 					})
 					break
 				case 'BUGS':
-					$.getJSON(_+'/crawls/bugs',d=>{
-						let pager = d.pager;
-						let list = d.list;
-						// No. ,title, artist, thumbnail
-						
-						$('#right').empty()
-						$('<table id="content"><tr id="head"></tr></table>')
-						.css({width: '99%',
-								height: '50px',
-				              border: '1px solid black'})
-						.appendTo('#right')
-						$.each(['No.','제목','가수','앨범'],(i, j)=>{
-							$('<th/>')
-							.html('<b>'+j+'</b>')
-							.css({width: '25%',height: '100%',
-					              border: '1px solid black'})
-							.appendTo('#head')
-						})
-						$.each(list, (i, j)=>{
-							$('<tr><td>'+j.seq+'</td><td><img src="'+j.thumbnail+'"/></td><td>'+j.title+'</td><td>'+j.artist+'</td></tr>')
-							.css({width: '25%',height: '100%',
-					              border: '1px solid black'})
-							.appendTo('#content tbody')
-						})
-						$('#content tr td').css({border: '1px solid black'})
-						
-						
-						
-					})
+					list(1)
 					break
 					
 				}
@@ -129,6 +102,84 @@ app =(()=>{
 		
 		
 	}
-	return {run}
+	let list = x =>{
+		$.getJSON(_+'/crawls/bugs/page/'+x,d=>{
+			let pager = d.pager;
+			let list = d.list;
+			// No. ,title, artist, thumbnail
+			
+			$('#right').empty()
+			
+			$('<table id="content"><tr id="head"></tr></table>')
+			.css({width: '99%',
+					height: '50px',
+	              border: '1px solid black'})
+			.appendTo('#right')
+			$.each(['No.','제목','가수','앨범'],(i, j)=>{
+				$('<th/>')
+				.html('<b>'+j+'</b>')
+				.css({width: '25%',height: '100%',
+		              border: '1px solid black'})
+				.appendTo('#head')
+			})
+			$.each(list, (i, j)=>{
+				$('<tr><td>'+j.seq+'</td><td><img src="'+j.thumbnail+'"/></td><td>'+j.title+'</td><td>'+j.artist+'</td></tr>')
+				.css({width: '25%',height: '100%',
+		              border: '1px solid black'})
+				.appendTo('#content tbody')
+			})
+			$('#content tr td').css({border: '1px solid black'})
+			$('<div/>',{
+				id : 'pagination'
+			})
+			.css({width: '50%',
+				  height: '50px',
+				  margin: '20px auto'})
+			.appendTo('#right')
+			if(pager.existPrev){
+				$('<span/>')
+				.css({width: '50px',
+					  height: '30px',
+					  display: 'inline-block',
+		              border: '1px solid black'})
+				.text('PREV')
+				.appendTo('#pagination')
+				.click(()=>{
+					app.list(pager.prevBlock)
+				})
+			}
+			let i = pager.startPage
+			for(;i<=pager.endPage; i++){
+				$('<span/>')
+				.css({width: '30px',
+					  height: '30px',
+					  display: 'inline-block',
+		              border: '1px solid black'})
+				.text(i+1)
+				.appendTo('#pagination')
+				.click(function(){
+					let page = parseInt($(this).text())
+					
+					app.list(page - 1)
+				})
+			}
+			if(pager.existNext){
+				$('<span/>')
+				.css({width: '50px',
+					  height: '30px',
+					  display: 'inline-block',
+		              border: '1px solid black'})
+				.text('NEXT')
+				.appendTo('#pagination')
+				.click(()=>{
+					app.list(pager.nextBlock)
+				})
+			}
+			
+			
+			
+		})
+	}
+	return {run, list}
 	
 })()
